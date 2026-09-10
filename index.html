@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Agent Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<div class="sidebar">
+  <div class="brand"><i class="fa-solid fa-brain"></i> IBM Watson Bob</div>
+  <button class="nav-btn active" data-section="hub"><i class="fa-solid fa-bolt"></i> Agent Hub</button>
+  <button class="nav-btn" data-section="analytics"><i class="fa-solid fa-chart-line"></i> Analytics</button>
+  <button class="nav-btn" data-section="scheduler"><i class="fa-solid fa-calendar-days"></i> Scheduler</button>
+  <button class="nav-btn" data-section="settings"><i class="fa-solid fa-gear"></i> Settings</button>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <header>
+    <h3 id="page-title">Social Media Agent Workspace</h3>
+    <span style="font-size:0.8rem;color:var(--green)"><i class="fa-solid fa-circle"></i> Connected</span>
+  </header>
+
+  <!-- ══ SECTION: AGENT HUB ══ -->
+  <div class="section active" id="sec-hub">
+    <div class="grid12">
+      <div class="card c-3">
+        <div class="c-title">X (Twitter) <i class="fa-brands fa-x-twitter"></i></div>
+        <div class="num">42.8K</div><div class="stat up">&#9650; +12.4% this week</div>
+      </div>
+      <div class="card c-3">
+        <div class="c-title">LinkedIn <i class="fa-brands fa-linkedin"></i></div>
+        <div class="num">18.2K</div><div class="stat up">&#9650; +8.1% this week</div>
+      </div>
+      <div class="card c-3">
+        <div class="c-title">Instagram <i class="fa-brands fa-instagram"></i></div>
+        <div class="num">89.4K</div><div class="stat up">&#9650; +22.3% this week</div>
+      </div>
+      <div class="card c-3">
+        <div class="c-title">Facebook <i class="fa-brands fa-facebook"></i></div>
+        <div class="num">31.5K</div><div class="stat down">&#9660; -1.4% this week</div>
+      </div>
+
+      <div class="card c-8">
+        <div class="c-title">Agent Generation Layer (Multimodal Inputs)</div>
+        <div class="input-box">
+          <textarea id="pIn" placeholder="Type prompt, attach images, or use voice commands..."></textarea>
+          <div class="actions">
+            <div class="tools">
+              <button title="Attach image"><i class="fa-regular fa-image"></i></button>
+              <button title="Voice input"><i class="fa-solid fa-microphone"></i></button>
+            </div>
+            <button class="btn" id="genBtn" onclick="runAgent()">Generate</button>
+          </div>
+        </div>
+        <div class="out-box" id="pOut"></div>
+      </div>
+
+      <div class="card c-4">
+        <div class="c-title">Predictive Insights</div>
+        <div class="p-item"><div><span class="pill">#GenerativeAI</span></div><div class="up">94% Vel</div></div>
+        <div class="p-item"><div><span class="pill">#Automation</span></div><div class="up">81% Vel</div></div>
+        <div class="p-item"><div><span class="pill">#IBMWatson</span></div><div class="up">76% Vel</div></div>
+        <div class="p-item"><div><span class="pill">#CloudAI</span></div><div class="down">58% Vel</div></div>
+        <div style="margin-top:12px;font-size:0.8rem;color:var(--muted)">Best Post Time: <b style="color:var(--accent)">3:45 PM EST</b></div>
+      </div>
+
+      <div class="card c-8">
+        <div class="c-title">Omni-Channel Engagement</div>
+        <div class="chart-h"><canvas id="ch1"></canvas></div>
+      </div>
+      <div class="card c-4">
+        <div class="c-title">Sentiment Matrix</div>
+        <div class="chart-h"><canvas id="ch2"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: ANALYTICS ══ -->
+  <div class="section" id="sec-analytics">
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Reach</div>
+        <div class="kpi-val">2.4M</div>
+        <div class="kpi-delta up">&#9650; +18.2% vs prev period</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Impressions</div>
+        <div class="kpi-val">8.7M</div>
+        <div class="kpi-delta up">&#9650; +11.5% vs prev period</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Engagement Rate</div>
+        <div class="kpi-val">4.3%</div>
+        <div class="kpi-delta up">&#9650; +0.6 pts vs prev period</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Link Clicks</div>
+        <div class="kpi-val">142K</div>
+        <div class="kpi-delta down">&#9660; -3.1% vs prev period</div>
+      </div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab active" data-atab="overview">Overview</div>
+      <div class="tab" data-atab="reach">Reach &amp; Impressions</div>
+      <div class="tab" data-atab="platforms">Platform Breakdown</div>
+      <div class="tab" data-atab="posts">Top Posts</div>
+    </div>
+
+    <!-- Tab: Overview -->
+    <div id="atab-overview" class="chart-section">
+      <div class="two-col">
+        <div class="card">
+          <div class="c-title">
+            Engagement Rate Over Time
+            <div class="range-bar">
+              <button class="range-btn active" data-range="7d" onclick="setRange(this,'eng')">7D</button>
+              <button class="range-btn" data-range="30d" onclick="setRange(this,'eng')">30D</button>
+              <button class="range-btn" data-range="90d" onclick="setRange(this,'eng')">90D</button>
+            </div>
+          </div>
+          <div class="chart-tall"><canvas id="engChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="c-title">Follower Growth</div>
+          <div class="chart-tall"><canvas id="growChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Reach & Impressions -->
+    <div id="atab-reach" class="chart-section" style="display:none;">
+      <div class="card">
+        <div class="c-title">
+          Daily Reach vs Impressions
+          <div class="range-bar">
+            <button class="range-btn active" data-range="7d" onclick="setRange(this,'reach')">7D</button>
+            <button class="range-btn" data-range="30d" onclick="setRange(this,'reach')">30D</button>
+          </div>
+        </div>
+        <div class="chart-tall" style="height:300px;"><canvas id="reachChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Tab: Platform Breakdown -->
+    <div id="atab-platforms" class="chart-section" style="display:none;">
+      <div class="two-col">
+        <div class="card">
+          <div class="c-title">Followers by Platform</div>
+          <div class="chart-tall"><canvas id="platBarChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="c-title">Engagement Share</div>
+          <div class="chart-tall"><canvas id="platPieChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Top Posts -->
+    <div id="atab-posts" class="chart-section" style="display:none;">
+      <div class="card">
+        <div class="c-title">Top Performing Posts (Last 30 days)</div>
+        <table class="queue-table">
+          <thead><tr>
+            <th>Platform</th><th>Content</th><th>Reach</th><th>Likes</th><th>Comments</th><th>Shares</th><th>Eng. Rate</th>
+          </tr></thead>
+          <tbody id="top-posts-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: SCHEDULER ══ -->
+  <div class="section" id="sec-scheduler">
+    <div class="sched-layout">
+
+      <div style="display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="card" style="flex-shrink:0;">
+          <div class="c-title">Upcoming Week <span id="week-range" style="font-size:0.7rem;color:var(--muted);text-transform:none;"></span></div>
+          <div class="cal-strip" id="cal-strip"></div>
+        </div>
+
+        <div class="card" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+          <div class="c-title">
+            Post Queue
+            <span id="queue-count" style="font-size:0.72rem;background:rgba(59,130,246,0.15);color:#60a5fa;padding:2px 7px;border-radius:10px;font-weight:700;">0 posts</span>
+          </div>
+          <div style="overflow-y:auto;flex:1;">
+            <table class="queue-table">
+              <thead><tr>
+                <th>Platform</th><th style="width:38%">Content</th><th>Date &amp; Time</th><th>Status</th><th></th>
+              </tr></thead>
+              <tbody id="queue-tbody"></tbody>
+            </table>
+            <div id="queue-empty" class="empty-state"><i class="fa-regular fa-calendar-xmark"></i>No posts scheduled yet.<br>Use the form to add your first post.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="overflow-y:auto;">
+        <div class="c-title" style="margin-bottom:16px;">Schedule a Post</div>
+
+        <div class="form-group">
+          <label class="form-label">Platform</label>
+          <select class="form-input" id="sch-platform">
+            <option value="x">𝕏 (Twitter)</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="instagram">Instagram</option>
+            <option value="facebook">Facebook</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Content</label>
+          <textarea class="form-input form-textarea" id="sch-content" placeholder="Write your post content here…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input type="date" class="form-input" id="sch-date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time</label>
+          <input type="time" class="form-input" id="sch-time" value="09:00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-input" id="sch-status">
+            <option value="scheduled">Scheduled</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+        <button class="submit-btn" onclick="addPost()"><i class="fa-solid fa-calendar-plus"></i> Add to Queue</button>
+
+        <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
+          <div class="c-title">Scheduler Stats</div>
+          <div class="stats-grid">
+            <div class="stat-box"><div class="stat-box-label">Scheduled</div><div class="stat-box-val" id="stat-scheduled" style="color:var(--accent);">0</div></div>
+            <div class="stat-box"><div class="stat-box-label">Drafts</div><div class="stat-box-val" id="stat-drafts" style="color:var(--muted);">0</div></div>
+            <div class="stat-box"><div class="stat-box-label">Published</div><div class="stat-box-val" id="stat-published" style="color:var(--green);">0</div></div>
+            <div class="stat-box"><div class="stat-box-label">This Week</div><div class="stat-box-val" id="stat-week" style="color:var(--purple);">0</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: SETTINGS ══ -->
+  <div class="section" id="sec-settings">
+    <div style="padding:40px;max-width:500px;">
+      <div class="card">
+        <div class="c-title">Settings</div>
+        <p style="color:var(--muted);font-size:0.85rem;margin-top:8px;">Settings panel — coming soon.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script src="app.js"></script>
+</body>
+</html>
