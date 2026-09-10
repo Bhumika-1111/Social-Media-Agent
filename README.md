@@ -47,18 +47,3 @@ social-media-dashboard/
 | [Chart.js](https://www.chartjs.org/) | 4.4.3 | All charts |
 | [Font Awesome](https://fontawesome.com/) | 6.5.1 | Icons |
 
-## 🌐 Uploading to GitHub Pages
-
-1. Create a new GitHub repository
-2. Upload all 4 files (`index.html`, `style.css`, `app.js`, `README.md`)
-3. Go to **Settings → Pages → Branch: main → Save**
-4. Your dashboard will be live at `https://<your-username>.github.io/<repo-name>/`
-
-## 🌐 Uploading to Netlify / Vercel
-
-- **Netlify**: Drag & drop the project folder at [netlify.com/drop](https://app.netlify.com/drop)
-- **Vercel**: `npx vercel` in the project folder, or import via GitHub
-
-## 📄 License
-
-MIT — free to use and modify.
