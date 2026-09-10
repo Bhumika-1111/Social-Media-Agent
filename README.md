@@ -47,3 +47,6 @@ social-media-dashboard/
 | [Chart.js](https://www.chartjs.org/) | 4.4.3 | All charts |
 | [Font Awesome](https://fontawesome.com/) | 6.5.1 | Icons |
 
+## License
+
+MIT - free to use and modify.
